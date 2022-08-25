@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # React links
   get '/app' => 'library#index'
   get '/library' => 'library#index'
+  get '/wishlist' => 'library#index'
   get '/settings' => 'library#index'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
