@@ -39,13 +39,13 @@ const HeaderBar = styled.div`
 `
 
 const Menu = styled.p`
-    font-size: 200%;
+    font-size: 150%;
     margin-left: 1em;
     width: 3em;
 `
 
 const LogoutButton = styled.p`
-    font-size: 200%;
+    font-size: 150%;
     margin-right: 1em;
     background-color: #64412b;
     border: 1px solid #333;
