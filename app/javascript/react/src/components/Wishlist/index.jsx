@@ -2,16 +2,16 @@ import React from "react";
 import styled from 'styled-components'
 import Layout from "../Layout";
 
-const Home = (props) => {
+const Wishlist = (props) => {
 
     return (
         <Layout user={props.user}>
-            <h1>Home Page</h1>
+            <h1>Wishlist Page</h1>
         </Layout>
     )
 }
 
 
-export default Home
+export default Wishlist
 
 // Styling

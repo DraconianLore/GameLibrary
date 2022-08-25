@@ -12,7 +12,7 @@ const Header = (props) => {
 
     return(
         <HeaderBar>
-            <Menu>Menu</Menu>
+            <Menu />
             <h1>{props.user.name}'s Game Library</h1>
 
             <LogoutButton onClick={logOut}>Logout</LogoutButton>
@@ -29,7 +29,7 @@ const HeaderBar = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100vw;
+    width: 100%;
     height: 75px;
     background-color: #824a13;
     color: #ff9b5f;
@@ -41,6 +41,7 @@ const HeaderBar = styled.div`
 const Menu = styled.p`
     font-size: 200%;
     margin-left: 1em;
+    width: 3em;
 `
 
 const LogoutButton = styled.p`
@@ -54,4 +55,5 @@ const LogoutButton = styled.p`
         background-color: #74513b;
     }
     cursor: pointer;
+    width: 3em;
 `

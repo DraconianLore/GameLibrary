@@ -13,7 +13,7 @@ class Auth0Controller < ApplicationController
       end
   
       # Redirect to the URL you want after successful auth
-      redirect_to '/library'
+      redirect_to '/app'
     end
   
     def failure
