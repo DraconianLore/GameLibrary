@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 class SideMenu extends React.Component {
   showSettings (event) {
     event.preventDefault();
-
+    window.location.replace(window.location.protocol + "//" + window.location.host + '/settings')
   }
 
   render () {
@@ -14,7 +14,7 @@ class SideMenu extends React.Component {
         <Link id="home" className="menu-item" to="/app">Home</Link>
         <Link id="library" className="menu-item" to="/library">Library</Link>
         <Link id="wishlist" className="menu-item" to="/wishlist">Wishlist</Link>
-        <Link id="settings" className="menu-item" to="/settings">Settings</Link>
+        <Link id="settings" className="menu-item" to='#' onClick={this.showSettings}>Settings</Link>
       </Menu>
     );
   }

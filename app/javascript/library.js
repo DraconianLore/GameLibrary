@@ -17,7 +17,6 @@ root.render(<BrowserRouter>
       <Route path='/app' element={<Home user={data} />} />
       <Route path='/library' element={<Library user={data} />} />
       <Route path='/wishlist' element={<Wishlist user={data} />} />
-      <Route path='/settings' element={<Settings user={data} />} />
     </Routes>
   </BrowserRouter>);
 })
