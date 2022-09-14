@@ -23,8 +23,9 @@ export default Layout
 
 const MainContent = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     height: 100%;
     background-color: #592a03;
     color: #ff9b5f;

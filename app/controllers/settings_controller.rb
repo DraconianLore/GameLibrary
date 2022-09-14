@@ -2,7 +2,7 @@ class SettingsController < ApplicationController
     include Secured
 
     def index
-        @user = User.find_by email: session[:userinfo]['user.email']
+        @user = current_user
     end
 
 end

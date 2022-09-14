@@ -119,6 +119,7 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.16.3)
     msgpack (1.5.6)
+    multi_json (1.15.0)
     multi_xml (0.6.0)
     net-imap (0.2.3)
       digest
@@ -157,9 +158,15 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    omniauth-openid (2.0.1)
+      omniauth (>= 1.0, < 3.0)
+      rack-openid (~> 1.4.0)
     omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
+    omniauth-steam (1.0.6)
+      multi_json
+      omniauth-openid
     pg (1.4.3)
     public_suffix (5.0.0)
     puma (5.6.5)
@@ -168,6 +175,9 @@ GEM
     rack (2.2.4)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
+    rack-openid (1.4.2)
+      rack (>= 1.1.0)
+      ruby-openid (>= 2.1.8)
     rack-protection (2.2.2)
       rack
     rack-test (2.0.2)
@@ -205,6 +215,7 @@ GEM
     reline (0.3.1)
       io-console (~> 0.5)
     rexml (3.2.5)
+    ruby-openid (2.9.2)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     selenium-webdriver (4.4.0)
@@ -260,6 +271,7 @@ DEPENDENCIES
   jsbundling-rails
   omniauth-auth0 (~> 3.0)
   omniauth-rails_csrf_protection (~> 1.0)
+  omniauth-steam
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors
@@ -273,7 +285,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 2.7.0p0
+   ruby 2.7.6p219
 
 BUNDLED WITH
    2.2.32

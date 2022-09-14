@@ -1,0 +1,12 @@
+
+<% if @user["#{client}_id"] %>
+    <div class='img-holder'>
+        <%= image_tag "#{client}.png", class: 'logo-img' %>
+        <div class='img-center'>
+            <div class='unlink'><%= button_to 'Unlink', unlink_path, params: {client: client}, class: 'btn-unlink' %></div>
+        </div>
+    </div>
+    <p class='username'><%= @user["#{client}_name"] %></p>
+<% else %>
+    <%= button_to image_tag("#{client}-connect.png"), "/auth/#{client}", data: { turbo: false }  %>
+<% end %>      

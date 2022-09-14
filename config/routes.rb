@@ -15,4 +15,7 @@ Rails.application.routes.draw do
   get '/auth/auth0/callback' => 'auth0#callback'
   get '/auth/failure' => 'auth0#failure'
   get '/auth/logout' => 'auth0#logout'
+
+  post '/auth/steam/callback' => 'launchers#steam'
+  post '/unlink' => 'launchers#unlink'
 end

@@ -10,16 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_24_223933) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_14_213458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "friend_lists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "friend_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friend_lists_on_friend_id"
+    t.index ["user_id"], name: "index_friend_lists_on_user_id"
+  end
+
+  create_table "friends", force: :cascade do |t|
+    t.string "steam_id"
+    t.string "steam_name"
+    t.string "games", array: true
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "steam_id"
-    t.string "epic_id"
-    t.string "gog_id"
+    t.string "steam_name"
   end
 
+  add_foreign_key "friend_lists", "friends"
+  add_foreign_key "friend_lists", "users"
 end

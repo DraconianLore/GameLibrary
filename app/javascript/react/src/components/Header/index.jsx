@@ -13,7 +13,7 @@ const Header = (props) => {
     return(
         <HeaderBar>
             <Menu />
-            <h1>{props.user.name}'s Game Library</h1>
+            <h1>{props.user.steam_name || props.user.name}'s Game Coordinator</h1>
 
             <LogoutButton onClick={logOut}>Logout</LogoutButton>
         </HeaderBar>
