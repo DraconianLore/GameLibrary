@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_14_213458) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_15_024503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,8 +26,35 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_213458) do
   create_table "friends", force: :cascade do |t|
     t.string "steam_id"
     t.string "steam_name"
-    t.string "games", array: true
     t.datetime "updated_at"
+    t.string "avatar"
+  end
+
+  create_table "friends_game_lists", force: :cascade do |t|
+    t.bigint "friend_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friends_game_lists_on_friend_id"
+    t.index ["game_id"], name: "index_friends_game_lists_on_game_id"
+  end
+
+  create_table "game_lists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_game_lists_on_game_id"
+    t.index ["user_id"], name: "index_game_lists_on_user_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.string "appid"
+    t.string "name"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "last_played"
   end
 
   create_table "users", force: :cascade do |t|
@@ -35,8 +62,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_213458) do
     t.string "email"
     t.string "steam_id"
     t.string "steam_name"
+    t.datetime "updated_at", default: "2022-09-15 00:50:13", null: false
   end
 
   add_foreign_key "friend_lists", "friends"
   add_foreign_key "friend_lists", "users"
+  add_foreign_key "friends_game_lists", "friends"
+  add_foreign_key "friends_game_lists", "games"
+  add_foreign_key "game_lists", "games"
+  add_foreign_key "game_lists", "users"
 end

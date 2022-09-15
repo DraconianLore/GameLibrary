@@ -16,5 +16,10 @@
 
  body, #library {
     margin: 0;
- }
+}
+.no-img {
+   background-image: url('noimg.jpg');
+   height: 215px;
+   width: 460px
+}
 

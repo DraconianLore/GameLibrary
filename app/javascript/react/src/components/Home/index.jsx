@@ -2,6 +2,7 @@ import React from "react";
 import styled from 'styled-components'
 import Layout from "../Layout";
 import { Link } from 'react-router-dom'
+import GameList from "../GameList";
 
 const Home = (props) => {
     const showSettings = (e) => {
@@ -15,7 +16,8 @@ const Home = (props) => {
                 </HomeSection>
             }
             {props.user.steam_name ?<HomeSection>
-                <h1>section 2</h1>
+                <h1>My Games</h1>
+                <GameList games={props.games} />
             </HomeSection>
             :<HomeSection>
                 <h2>Please go to your <Link id="settings" to='#' onClick={showSettings}>Settings Page</Link> and link your steam account</h2>
@@ -31,8 +33,9 @@ export default Home
 const HomeSection = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
     a {
         color: #ffcc99;
     }

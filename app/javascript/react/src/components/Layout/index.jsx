@@ -26,7 +26,8 @@ const MainContent = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100%;
+    height: 95%;
+    overflow-y: scroll;
     background-color: #592a03;
     color: #ff9b5f;
 `
