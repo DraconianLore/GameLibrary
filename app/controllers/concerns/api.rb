@@ -6,18 +6,18 @@ module Api
 
     def load_friends
         @steam_key = Rails.configuration.launchers[:steam_api_key]
-
-        uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
-        res = Net::HTTP.get_response(uri)
-        firends = 'Not Public' unless res.is_a?(Net::HTTPSuccess)
-        if res.is_a?(Net::HTTPSuccess)
-            body = JSON.parse res.body
-            friendList = body["friendslist"]["friends"].to_a
-            friendList.each do |f|
-                create_friend(f['steamid'])
-            end
-        end
-        return @user.friends
+      
+        # uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
+        # res = Net::HTTP.get_response(uri)
+        # firends = 'Not Public' unless res.is_a?(Net::HTTPSuccess)
+        # if res.is_a?(Net::HTTPSuccess)
+        #     body = JSON.parse res.body
+        #     friendList = body["friendslist"]["friends"].to_a
+        #     friendList.each do |f|
+        #         create_friend(f['steamid'])
+        #     end
+        # end
+        # return @user.friends
 
     end
 
@@ -67,6 +67,20 @@ module Api
     def load_user_games
         if @user.updated_at < 1.day.ago
             @user.games = get_games(@user.steam_id)
+            # @user.games.each do |game|
+            #     uri = URI("https://store.steampowered.com/api/appdetails?appids=#{game.appid}")
+            #     res = Net::HTTP.get_response(uri)
+            #     if res.is_a?(Net::HTTPSuccess)
+            #         body = JSON.parse res.body
+            #         puts '###############################'
+            #         # useful sections to pull
+            #         puts body[game.appid]['data']['categories'] # categories/tage - looking for multiplayer, co-op, pvp etc
+            #         puts body[game.appid]['data']['genres'] # game genres as well as 'Early Access' tag
+            #         puts body[game.appid]['data']['short_description'] # short description of the game
+            #         puts body[game.appid]['data']['price_overview']['discount_percent'] # is it on sale?
+            #         puts '###############################'
+            #     end
+            # end
         end
         return @user.games.order('last_played DESC NULLS last')
     end
