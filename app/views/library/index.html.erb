@@ -1,6 +1,11 @@
 
-<%= content_tag :div, id: 'library', data: @user.to_json do %>
+<%= content_tag :div, id: 'library', data: @games.to_json do %>
+    <%= content_tag :div, id: 'user-data', data: @user.to_json do %>
+        <%= content_tag :div, id: 'friend-data', data: @friends.to_json do %>
+        <%end%>
+    <%end%>
 <%end%>
+    
 
 
 <%= javascript_include_tag "library" %>
