@@ -11,7 +11,8 @@ const Library = (props) => {
   const [notShared, setNotShared] = useState(false)
 
   const updateGameList = async(friends) => {
-    let friend_ids = Object.keys(friends)
+
+    let friend_ids = Object.keys(friends).filter(k => friends[k] === true)
     await axios.get("/shared_games?friend_ids=" + friend_ids)
     .then((res) => {
       let shared = res.data.shared_games
@@ -38,8 +39,8 @@ const Library = (props) => {
   return (
     <Layout user={props.user}>
       <h1>Multiplayer Games</h1>
+      <SelectFriends>Select friends to see which games you all have</SelectFriends>
       <FriendList friends={props.friends} updateGameList={updateGameList} />
-      <h2>Select friends to see which games you all have</h2>
       {gameList.length > 0 ? <GameSection bg='113311'><h2>Games all selected friends have</h2>
       <GameList games={gameList} /></GameSection>:<h2>No shared games :(</h2>}
       {soClose && <GameSection bg='5e3f1e'><h2>Games most of you have</h2>
@@ -54,10 +55,16 @@ export default Library;
 
 // Styling
 const GameSection = styled.div`
-background-color: #${props => props.bg};
-color: #ccc;
-border-radius: 0 50px 0 50px;
-width: 100%;
-margin: 0 0 2em;
-text-align: center;
+  background-color: #${props => props.bg};
+  color: #ccc;
+  border-radius: 0 50px 0 50px;
+  width: 100%;
+  margin: 0 0 2em;
+  text-align: center;
+`
+const SelectFriends = styled.h3`
+  background-color: #693a13;
+  margin-bottom: 0;
+  border-radius: 50px 50px 0 0;
+  padding 0.5em 1em 0;
 `

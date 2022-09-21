@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from 'styled-components'
 
 
@@ -10,9 +10,9 @@ const FilterList = (props) => {
             <Filter id='runs_on_windows' active={props.filters.runs_on_windows} onClick={props.applyFilter}>Windows</Filter>
             <Filter id='runs_on_mac' active={props.filters.runs_on_mac} onClick={props.applyFilter}>Mac</Filter>
             <Filter id='runs_on_linux' active={props.filters.runs_on_linux} onClick={props.applyFilter}>Linux</Filter>
-            <Filter id='is_multiplayer' active={props.filters.is_multiplayer} onClick={props.applyFilter}>Multiplayer</Filter>
+            {props.multiplayerOnly || <><Filter id='is_multiplayer' active={props.filters.is_multiplayer} onClick={props.applyFilter}>Multiplayer</Filter>
             <Filter id='is_pvp' active={props.filters.is_pvp} onClick={props.applyFilter}>PvP</Filter>
-            <Filter id='is_coop' active={props.filters.is_coop} onClick={props.applyFilter}>Co-op</Filter>
+            <Filter id='is_coop' active={props.filters.is_coop} onClick={props.applyFilter}>Co-op</Filter></>}
             <Filter id='current_discount' active={props.filters.current_discount} onClick={props.applyFilter}>On Sale</Filter>
         </Filters>
     )
