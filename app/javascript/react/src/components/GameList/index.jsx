@@ -1,5 +1,8 @@
 import React from "react";
 import styled from 'styled-components'
+import { mdiApple, mdiLinux, mdiMicrosoftWindows } from '@mdi/js';
+import Icon from '@mdi/react'
+
 
 const GameList = (props) => {
     const openInSteam = (g) => {
@@ -17,11 +20,13 @@ const GameList = (props) => {
                         currentTarget.classList.add('no-img')
                     }} />
                     {game.current_discount > 0 && <SaleBanner>{game.current_discount}% Off</SaleBanner>}
+                    {game.is_pvp && <PvpBanner>PvP</PvpBanner>}
+                    {game.is_coop && <CoopBanner>Co-op</CoopBanner>}
                     <div id={'g' + game.appid} className='gameInfo' onClick={() => openInSteam(game.appid)}>
                         <p>{game.description}</p>
                     </div>
                 </ImageContainer>
-                <GameName>{game.name}</GameName>
+                <GameName><p>{game.name}</p> {game.runs_on_windows && <Icon path={mdiMicrosoftWindows} size={1} />}{game.runs_on_mac && <Icon path={mdiApple} size={1} />}{game.runs_on_linux && <Icon path={mdiLinux} size={1} />}</GameName>
             </GameItem>
         )
     })
@@ -44,8 +49,14 @@ const GameContainer = styled.div`
     flex-wrap: wrap;
     width: 100%;
 `
-const GameName = styled.p`
+const GameName = styled.div`
     margin: 0.2em 0 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p {
+        margin: 0 1em
+    }
 `
 const GameItem = styled.div`
     display: flex;
@@ -56,6 +67,7 @@ const GameItem = styled.div`
 `
 const ImageContainer = styled.div`
     position: relative;
+    height: 215px;
     overflow: hidden;
     .gameInfo {
         display: none;
@@ -94,6 +106,49 @@ const SaleBanner = styled.div`
     -ms-transform: rotate(35deg);
     -o-transform: rotate(35deg);
     transform: rotate(35deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const PvpBanner = styled.div`
+    height: 20px;
+    width: 80px;
+    background-color: #9C1B21;
+    position: absolute;
+    bottom: 8px;
+    left: -15px;
+    text-align: center;
+    color: #FFF;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(40deg);
+    -ms-transform: rotate(40deg);
+    -o-transform: rotate(40deg);
+    transform: rotate(40deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+const CoopBanner = styled.div`
+    height: 20px;
+    width: 80px;
+    background-color: #1B219C;
+    position: absolute;
+    bottom: 8px;
+    right: -15px;
+    text-align: center;
+    color: #FFF;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(-40deg);
+    -ms-transform: rotate(-40deg);
+    -o-transform: rotate(-40deg);
+    transform: rotate(-40deg);
     display: flex;
     justify-content: center;
     align-items: center;
