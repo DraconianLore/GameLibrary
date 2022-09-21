@@ -6,19 +6,22 @@ module Api
 
     def load_friends
         @steam_key = Rails.configuration.launchers[:steam_api_key]
-      
-        # uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
-        # res = Net::HTTP.get_response(uri)
-        # firends = 'Not Public' unless res.is_a?(Net::HTTPSuccess)
-        # if res.is_a?(Net::HTTPSuccess)
-        #     body = JSON.parse res.body
-        #     friendList = body["friendslist"]["friends"].to_a
-        #     friendList.each do |f|
-        #         create_friend(f['steamid'])
-        #     end
-        # end
-        # return @user.friends
-
+        if @user.updated_at < 1.day.ago
+            uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
+            res = Net::HTTP.get_response(uri)
+            not_public = 'Not Public' unless res.is_a?(Net::HTTPSuccess)
+            if res.is_a?(Net::HTTPSuccess)
+                friends = []
+                body = JSON.parse res.body
+                friendList = body["friendslist"]["friends"].to_a
+                friendList.each do |f|
+                    create_friend(f['steamid'])
+                    friends.push(f['steamid'])
+                end
+                @user.friends = Friend.where(steam_id: friends)
+            end
+        end
+        return not_public || @user.friends
     end
 
     def create_friend(id)
@@ -65,24 +68,35 @@ module Api
     end
 
     def load_user_games
+
         if @user.updated_at < 1.day.ago
             @user.games = get_games(@user.steam_id)
-            # @user.games.each do |game|
-            #     uri = URI("https://store.steampowered.com/api/appdetails?appids=#{game.appid}")
-            #     res = Net::HTTP.get_response(uri)
-            #     if res.is_a?(Net::HTTPSuccess)
-            #         body = JSON.parse res.body
-            #         puts '###############################'
-            #         # useful sections to pull
-            #         puts body[game.appid]['data']['categories'] # categories/tage - looking for multiplayer, co-op, pvp etc
-            #         puts body[game.appid]['data']['genres'] # game genres as well as 'Early Access' tag
-            #         puts body[game.appid]['data']['short_description'] # short description of the game
-            #         puts body[game.appid]['data']['price_overview']['discount_percent'] # is it on sale?
-            #         puts '###############################'
-            #     end
-            # end
+            @user.updated_at = Time.now
+            @user.save
+        end
+        @user.games.each do |game|
+            if game.updated_at < 1.day.ago || game.created_at > 1.day.ago
+                uri = URI("https://store.steampowered.com/api/appdetails?appids=#{game.appid}")
+                res = Net::HTTP.get_response(uri)
+                if res.is_a?(Net::HTTPSuccess)
+                    body = JSON.parse res.body
+                    if body[game.appid]['success'] == false
+                        game.destroy!
+                    else
+                        tag_array = body[game.appid]['data']['categories'].map { |tag| tag['description']}
+                        game.is_multiplayer = tag_array.include?('Multi-player') ? true : false
+                        game.is_coop = tag_array.include?('Co-op') ? true : false
+                        game.is_pvp = tag_array.include?('PvP') ? true : false
+                        game.description = body[game.appid]['data']['short_description']
+                        game.current_discount = body[game.appid]['data'].key?('price_overview') ? body[game.appid]['data']['price_overview']['discount_percent'] : 0
+                        game.runs_on_windows = body[game.appid]['data']['platforms']['windows']
+                        game.runs_on_mac = body[game.appid]['data']['platforms']['mac']
+                        game.runs_on_linux = body[game.appid]['data']['platforms']['linux']
+                        game.save
+                    end
+                end
+            end
         end
         return @user.games.order('last_played DESC NULLS last')
     end
 end
-    

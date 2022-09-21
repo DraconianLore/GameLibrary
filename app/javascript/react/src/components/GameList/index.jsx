@@ -34,7 +34,6 @@ const GameContainer = styled.div`
     justify-content: space-around;
     flex-wrap: wrap;
     width: 100%;
-    height: 100%;
 `
 const GameItem = styled.div`
     display: flex;

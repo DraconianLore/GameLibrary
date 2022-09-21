@@ -12,7 +12,7 @@ class SideMenu extends React.Component {
     return (
       <Menu pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" }>
         <Link id="home" className="menu-item" to="/app">Home</Link>
-        <Link id="library" className="menu-item" to="/library">Library</Link>
+        <Link id="library" className="menu-item" to="/library">Multiplayer Games</Link>
         <Link id="wishlist" className="menu-item" to="/wishlist">Wishlist</Link>
         <Link id="settings" className="menu-item" to='#' onClick={this.showSettings}>Settings</Link>
       </Menu>
