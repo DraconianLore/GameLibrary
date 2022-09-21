@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get '/settings' => 'settings#index'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
+  get '/shared_games' => 'library#game_match'
 
   get '/auth/auth0/callback' => 'auth0#callback'
   get '/auth/failure' => 'auth0#failure'
