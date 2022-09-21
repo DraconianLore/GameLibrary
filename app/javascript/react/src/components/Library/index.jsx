@@ -38,7 +38,7 @@ const Library = (props) => {
 
   return (
     <Layout user={props.user}>
-      <h1>Multiplayer Games</h1>
+      <HeadingH1>Multiplayer Games</HeadingH1>
       <SelectFriends>Select friends to see which games you all have</SelectFriends>
       <FriendList friends={props.friends} updateGameList={updateGameList} />
       {gameList.length > 0 ? <GameSection bg='113311'><h2>Games all selected friends have</h2>
@@ -54,6 +54,9 @@ const Library = (props) => {
 export default Library;
 
 // Styling
+const HeadingH1 = styled.h1`
+  margin-bottom: 0;
+`
 const GameSection = styled.div`
   background-color: #${props => props.bg};
   color: #ccc;
