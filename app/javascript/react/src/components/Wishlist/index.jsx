@@ -6,7 +6,7 @@ const Wishlist = (props) => {
 
     return (
         <Layout user={props.user}>
-            <h1>Wishlist Page</h1>
+            <h1>Coming Soon!</h1>
         </Layout>
     )
 }

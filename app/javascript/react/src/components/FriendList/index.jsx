@@ -55,11 +55,12 @@ const Friend = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1em;
+    padding: 1em 1em 0 1em;
     cursor: pointer;
     border-radius: 10px;
     ${props => props.selected && 'background-color: rgba(255,255,255,0.2);'}
     p {
-        margin: 0;
+        margin:  0.5em 0;
     }
+    ${props => props.selected && 'color: #ff0; img {  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3);};'}
 `
