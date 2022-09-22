@@ -2,7 +2,7 @@
     "name": "gamematch", 
     "scripts": {
       "dokku": {
-        "predeploy": "bundle exec rails assets:precompile",
+        "predeploy": "rake assets:precompile",
         "postdeploy": "bundle exec rails db:migrate"
       }
     }
