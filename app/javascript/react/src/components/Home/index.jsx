@@ -43,19 +43,17 @@ const Home = (props) => {
     }
 
     return (
-        <Layout user={props.user}>
+        <Layout user={props.user} section='Games'>
             {props.user.wishlist && <HomeSection>
                 <h1>Wishlist games</h1>
             </HomeSection>
             }
-            {props.user.steam_name ?<HomeSection>
+            <HomeSection>
                 <h1>All My Games</h1>
                 <FilterList filters={filters} applyFilter={applyFilters} />
                 <GameList games={games} />
             </HomeSection>
-            :<HomeSection>
-                <h2>Please go to your <Link id="settings" to='#' onClick={showSettings}>Settings Page</Link> and link your steam account</h2>
-            </HomeSection>}
+            
         </Layout>
     )
 }

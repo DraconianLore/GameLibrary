@@ -24,10 +24,11 @@ export default FilterList
 // Styling
 const Filters = styled.div`
     display: flex;
-    width: 90%;
+    max-width: 90%;
     align:items: center;
     justify-content: center;
     background-color: rgba(0,0,0,0.2);
+    margin-bottom 1em;
 `
 const Filter = styled.p`
     font-size: 120%;

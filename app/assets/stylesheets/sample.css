@@ -1,0 +1,29 @@
+/* Pre-login sample page */
+.login_screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #592a03;
+    width: 100vw;
+    height: 100vh;
+    color: #ff9b5f;
+}
+.sampleSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.sampleSection, h5 {
+    margin: 0;
+}
+.copy {
+    color:#ff9b5f;
+    text-decoration: none;
+}
+.loginButton {
+    background-color: #592a03;
+    border: none;
+    cursor: pointer;
+}

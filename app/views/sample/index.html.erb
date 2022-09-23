@@ -1,3 +1,14 @@
-<h1> not logged in </h1>
 
-<%= button_to 'Login', '/auth/auth0', method: :post, :data => {turbo: "false"} %>
+<div class='login_screen'>
+    <div class='sampleSection'>
+        <h1>Game Match</h1>
+        <p>Find steam friends who share multiplayer games</p>
+    </div>
+    <div class='sampleSection'>
+        <h1>Not logged in </h1>
+        <%= button_to image_tag("https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"), '/auth/steam', method: :post, :data => {turbo: "false"}, class: 'loginButton' %>
+    </div
+    <div class='sampleSection'>
+        <h5><a class='copy' href='https://www.stevenwing.dev'>Steven Wing</a> ©2022</h5>        
+    </di>
+</div>

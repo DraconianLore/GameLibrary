@@ -10,7 +10,7 @@ const Layout = (props) => {
         <div id='outer-container'>
             <SideMenu />
             <main id='page-wrap'>
-                <Header user={props.user} />
+                <Header user={props.user} section={props.section}/>
                 <MainContent>
                     {props.children}
                 </MainContent>
