@@ -3,23 +3,25 @@ class LaunchersController < ApplicationController
 
     def steam
         incomingData = request.env['omniauth.auth']
-        user = User.find(current_user.id)
-        user.steam_id =  incomingData[:uid]
-        user.steam_name = incomingData['info'][:nickname]
-        user.save
+        session[:userinfo] = {:uid => incomingData[:uid], :name => incomingData['info'][:nickname]}
+        user = session[:userinfo]
+        unless User.find_by steam_id: user[:uid]
+            person = {name: user[:name], steam_id: user[:uid], updated_at: Time.now}
+            User.create(person)
+        end
 
-        redirect_to settings_path
+        redirect_to '/app'
     end
 
     def unlink
-        unlink_from = params[:client]
-        user = current_user
-        user["#{unlink_from}_id"] = nil
-        user["#{unlink_from}_name"] = nil
+        User.find(current_user.id).destroy
+        reset_session
+        redirect_to root_url
+    end
 
-        if user.save
-            redirect_to settings_path
-        end
+    def logout
+        reset_session
+        redirect_to root_url
     end
 
 end

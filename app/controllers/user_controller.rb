@@ -7,6 +7,6 @@ class UserController < ApplicationController
 
     private
     def user_params
-        params.require(:person).permit(:name, :email)
+        params.require(:person).permit(:name, :steam_id, :updated_at)
     end
 end

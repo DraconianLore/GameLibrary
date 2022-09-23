@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_20_201619) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_23_024112) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,10 +67,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_201619) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "email"
     t.string "steam_id"
-    t.string "steam_name"
     t.datetime "updated_at", default: "2022-09-15 00:50:13", null: false
+    t.datetime "created_at"
   end
 
   add_foreign_key "friend_lists", "friends"
