@@ -50,7 +50,7 @@ const Library = (props) => {
     <Layout user={props.user} section='friends'>
       <SelectFriends>Select friends to see which games you all have</SelectFriends>
       <FriendList friends={props.friends} updateGameList={updateGameList} />
-      <GameSection bg='113311'>
+      {friendCount >0 &&<GameSection bg='113311'>
         {gameList.length >= 1 ? <><h2>{friendCount == 0 ? 'My Multiplayer Games' : 'Multiplayer games all selected friends have'}</h2>
         <GameList games={gameList} /></>
         : friendCount >= 1 && <h2>No shared multiplayer games :(</h2>}
@@ -58,11 +58,11 @@ const Library = (props) => {
           <h3>You are the only missing these games from your wishlist</h3>
          <GameList games={onWishlist} dontHave={true} />
         </>}
-      </GameSection>
+      </GameSection>}
       {soClose.length >= 1 && <GameSection bg='5e3f1e'><h2>Multiplayer games most of you have</h2>
       <GameList games={soClose} /></GameSection>}
-      {notShared.length >= 1 && <GameSection bg='400505'><h2>Your Multiplayer Games</h2>
-      <GameList games={notShared} /></GameSection>}
+      {(notShared.length >= 1 || friendCount === 0) && <GameSection bg='400505'><h2>Your Multiplayer Games</h2>
+      <GameList games={notShared.length > 0  ? notShared : gameList} /></GameSection>}
     </Layout>
   )
 }

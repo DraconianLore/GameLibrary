@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from 'styled-components'
 
 
 const FilterList = (props) => {
-
+    
     return(
 
         <Filters>
@@ -14,6 +15,7 @@ const FilterList = (props) => {
             <Filter id='is_pvp' active={props.filters.is_pvp} onClick={props.applyFilter}>PvP</Filter>
             <Filter id='is_coop' active={props.filters.is_coop} onClick={props.applyFilter}>Co-op</Filter>
             <Filter id='current_discount' active={props.filters.current_discount} onClick={props.applyFilter}>On Sale</Filter>
+            <Link to='/friends' style={{ textDecoration: 'none' }}><Filter id='friends' active={false}>Friends</Filter></Link>
         </Filters>
     )
 }
@@ -37,4 +39,5 @@ const Filter = styled.p`
     margin: 0.5em;
     padding: 0.2em 0.4em;
     cursor: pointer;
+    color: #ff9b5f;
 `
