@@ -11,7 +11,7 @@ const GameList = (props) => {
     }
     const games = props.games.map((game) => {
         return(
-            <GameItem key={game.appid}>
+            <GameItem key={game.appid} className={props.dontHave ? 'dontHave' : ''}>
                 <ImageContainer>
                     <img src={`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg`} 
                     onError={({ currentTarget }) => {
@@ -48,6 +48,7 @@ const GameContainer = styled.div`
     justify-content: space-around;
     flex-wrap: wrap;
     width: 100%;
+    
 `
 const GameName = styled.div`
     margin: 0.2em 0 1.5em;
@@ -64,6 +65,9 @@ const GameItem = styled.div`
     align-items: center;
     justify-content: center;
     min-width: 460px;
+    &.dontHave {
+        filter: grayscale(100%) brightness(50%);
+    }
 `
 const ImageContainer = styled.div`
     position: relative;
@@ -88,6 +92,7 @@ const ImageContainer = styled.div`
     :hover .gameInfo {
         display: flex;
     }
+    
 `
 const SaleBanner = styled.div`
     height: 30px;

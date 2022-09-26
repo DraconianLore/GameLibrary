@@ -18,6 +18,7 @@ const defaultFilters = {
 const Home = (props) => {
     const [games, setGames] = useState(props.games)
     const [filters, setFilters] = useState(defaultFilters)
+    const [wishlist, setWishlist] = useState(props.wishlist.filter(w => w.current_discount > 0))
 
     const showSettings = (e) => {
         e.preventDefault();
@@ -44,8 +45,9 @@ const Home = (props) => {
 
     return (
         <Layout user={props.user} section='Games'>
-            {props.user.wishlist && <HomeSection>
-                <h1>Wishlist games</h1>
+            {wishlist.length > 0 && <HomeSection>
+                <h1>Wishlist games on sale</h1>
+                <GameList games={wishlist} />
             </HomeSection>
             }
             <HomeSection>

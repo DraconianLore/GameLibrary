@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_23_024112) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_26_183711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_23_024112) do
     t.boolean "runs_on_linux"
     t.text "description"
     t.integer "current_discount"
+    t.integer "wishlist_order", default: 0
   end
 
   create_table "users", force: :cascade do |t|
@@ -72,10 +73,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_23_024112) do
     t.datetime "created_at"
   end
 
+  create_table "wishlists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_wishlists_on_game_id"
+    t.index ["user_id"], name: "index_wishlists_on_user_id"
+  end
+
   add_foreign_key "friend_lists", "friends"
   add_foreign_key "friend_lists", "users"
   add_foreign_key "friends_game_lists", "friends"
   add_foreign_key "friends_game_lists", "games"
   add_foreign_key "game_lists", "games"
   add_foreign_key "game_lists", "users"
+  add_foreign_key "wishlists", "games"
+  add_foreign_key "wishlists", "users"
 end
