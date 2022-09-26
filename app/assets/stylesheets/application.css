@@ -23,6 +23,11 @@
    height: 215px;
    width: 460px
 }
+.no-img-sml {
+   background-image: url('noimg-s.jpg');
+   height: 69px;
+   width: 184px
+}
 
 /* MDI */
 .mdi::before {
