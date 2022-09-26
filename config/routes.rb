@@ -5,14 +5,14 @@ Rails.application.routes.draw do
   
   # React links
   get '/app' => 'library#index'
-  get '/library' => 'library#index'
+  get '/friends' => 'library#index'
   get '/wishlist' => 'library#index'
   get '/settings' => 'settings#index'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/shared_games' => 'library#game_match'
 
-  get '/auth/logout' => 'steam#logout'
+  get '/auth/logout' => 'launchers#logout'
 
   post '/auth/steam/callback' => 'launchers#steam'
   post '/unlink' => 'launchers#unlink'

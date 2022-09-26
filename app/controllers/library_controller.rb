@@ -6,6 +6,7 @@ class LibraryController < ApplicationController
         @user = current_user
         @friends = load_friends
         @games = load_user_games
+        @wishlist = load_user_wishlist
     end
 
     def game_match
@@ -28,7 +29,4 @@ class LibraryController < ApplicationController
           }
 
     end
-
-    
-
 end

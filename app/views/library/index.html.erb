@@ -2,8 +2,10 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <%= content_tag :div, id: 'library', data: @games.to_json do %>
     <%= content_tag :div, id: 'user-data', data: @user.to_json do %>
-        <%= content_tag :div, id: 'friend-data', data: @friends.to_json do %>
-        <%end%>
+    <%end%>
+    <%= content_tag :div, id: 'friend-data', data: @friends.to_json do %>
+    <%end%>
+    <%= content_tag :div, id: 'wishlist-data', data: @wishlist.to_json do %>
     <%end%>
 <%end%>
     

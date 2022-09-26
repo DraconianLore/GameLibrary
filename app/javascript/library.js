@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const games = JSON.parse(gameNode.getAttribute('data'))
   const friendNode = document.getElementById('friend-data')
   const friends = JSON.parse(friendNode.getAttribute('data'))
+  const wishlistNode = document.getElementById('wishlist-data')
+  const wishlist = JSON.parse(wishlistNode.getAttribute('data'))
   
   
 
@@ -20,9 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 root.render(<BrowserRouter>
     <Routes>
-      <Route path='/app' element={<Home user={user} games={games} friends={friends} />} />
-      <Route path='/library' element={<Library user={user} games={games} friends={friends} />} />
-      <Route path='/wishlist' element={<Wishlist user={user} />} />
+      <Route path='/app' element={<Home user={user} games={games} friends={friends} wishlist={wishlist} />} />
+      <Route path='/friends' element={<Library user={user} games={games} friends={friends} />} />
+      <Route path='/wishlist' element={<Wishlist user={user} wishlist={wishlist} />} />
     </Routes>
   </BrowserRouter>);
 })
