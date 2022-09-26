@@ -5,7 +5,7 @@ module Api
 
 
     def load_friends
-        @steam_key = Rails.configuration.launchers[:steam_api_key]
+        @steam_key = ENV['STEAM_API_KEY']
         if @user.updated_at < 1.day.ago || !@user.friends.exists?
             uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
             res = Net::HTTP.get_response(uri)
