@@ -33,7 +33,7 @@ module Api
                     body = JSON.parse res.body
                     f.steam_name = body['response']['players'][0]['personaname']
                     f.avatar = body['response']['players'][0]['avatarmedium']
-                    games = get_friend_games(id) 
+                    games = get_games(id) 
                     if games != 'Private'
                         f.games << games
                     end
@@ -75,7 +75,7 @@ module Api
             @user.save
         end
         @user.games.each do |game|
-            if game.updated_at < 1.day.ago || game.created_at > 1.day.ago
+            if game.updated_at < 1.day.ago || game.created_at > 2.minutes.ago
                 uri = URI("https://store.steampowered.com/api/appdetails?appids=#{game.appid}")
                 res = Net::HTTP.get_response(uri)
                 if res.is_a?(Net::HTTPSuccess)
