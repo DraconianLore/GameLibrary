@@ -54,7 +54,7 @@ const Library = (props) => {
         {gameList.length >= 1 ? <><h2>{friendCount == 0 ? 'My Multiplayer Games' : 'Multiplayer games all selected friends have'}</h2>
         <GameList games={gameList} /></>
         : friendCount >= 1 && <h2>No shared multiplayer games :(</h2>}
-        {onWishlist.length > 0 &&<>
+        {(onWishlist.length > 0 && friendCount > 0) && <>
           <h3>You are the only missing these games from your wishlist</h3>
          <GameList games={onWishlist} dontHave={true} />
         </>}

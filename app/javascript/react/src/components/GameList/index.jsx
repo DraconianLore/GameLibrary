@@ -67,6 +67,9 @@ const GameItem = styled.div`
     min-width: 460px;
     &.dontHave {
         filter: grayscale(100%) brightness(50%);
+        :hover {
+            filter: none;
+        }
     }
 `
 const ImageContainer = styled.div`
