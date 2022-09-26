@@ -59,6 +59,7 @@ const GameName = styled.div`
     p {
         max-width: 360px;
         margin: 0 1em;
+        text-align: center;
     }
 `
 const GameItem = styled.div`
