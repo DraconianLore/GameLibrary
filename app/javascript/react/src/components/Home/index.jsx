@@ -50,7 +50,7 @@ const Home = (props) => {
             </LayoutChanger>
             {wishlist.length > 0 && <HomeSection>
                 <h1>Wishlist games on sale</h1>
-                <GameList games={wishlist} />
+                <GameList games={wishlist} small={small} />
             </HomeSection>
             }
             <HomeSection>
@@ -87,5 +87,8 @@ const HomeSection = styled.div`
     h1 {
         width: 100%;
         text-align: center;
+    }
+    :last-child {
+        padding-bottom: 2em;
     }
 `
