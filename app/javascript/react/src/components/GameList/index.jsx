@@ -55,8 +55,10 @@ const GameName = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 460px;
     p {
-        margin: 0 1em
+        max-width: 360px;
+        margin: 0 1em;
     }
 `
 const GameItem = styled.div`
