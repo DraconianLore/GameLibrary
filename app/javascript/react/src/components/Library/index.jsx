@@ -10,6 +10,7 @@ const Library = (props) => {
   const [soClose, setSoClose] = useState(false)
   const [notShared, setNotShared] = useState(false)
   const [friendCount, setFriendCount] = useState(0)
+  const [onWishlist, setOnWishlist] = useState(false)
 
   const updateGameList = async(friends) => {
 
@@ -35,14 +36,29 @@ const Library = (props) => {
     .catch((error) => {
       console.error(error)
     })
+    await axios.get("/check_wishlist?friend_ids=" + friend_ids)
+    .then((res) => {
+      let shared = res.data.shared_games
+      setOnWishlist(shared)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
   }
 
   return (
     <Layout user={props.user} section='friends'>
       <SelectFriends>Select friends to see which games you all have</SelectFriends>
       <FriendList friends={props.friends} updateGameList={updateGameList} />
-      {gameList.length >= 1 ? <GameSection bg='113311'><h2>{friendCount == 0 ? 'My Multiplayer Games' : 'Multiplayer games all selected friends have'}</h2>
-      <GameList games={gameList} /></GameSection>:friendCount >= 1 && <h2>No shared multiplayer games :(</h2>}
+      <GameSection bg='113311'>
+        {gameList.length >= 1 ? <><h2>{friendCount == 0 ? 'My Multiplayer Games' : 'Multiplayer games all selected friends have'}</h2>
+        <GameList games={gameList} /></>
+        : friendCount >= 1 && <h2>No shared multiplayer games :(</h2>}
+        {onWishlist.length > 0 &&<>
+          <h3>You are the only missing these games from your wishlist</h3>
+         <GameList games={onWishlist} dontHave={true} />
+        </>}
+      </GameSection>
       {soClose.length >= 1 && <GameSection bg='5e3f1e'><h2>Multiplayer games most of you have</h2>
       <GameList games={soClose} /></GameSection>}
       {notShared.length >= 1 && <GameSection bg='400505'><h2>Your Multiplayer Games</h2>

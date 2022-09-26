@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/shared_games' => 'library#game_match'
+  get '/check_wishlist' => 'library#wishlist_match'
 
   get '/auth/logout' => 'launchers#logout'
 
