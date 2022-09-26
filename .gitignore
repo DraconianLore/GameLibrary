@@ -36,6 +36,4 @@
 /node_modules
 
 # Auth0
-/config/auth0.yml
-
 /config/launchers.yml
