@@ -9,7 +9,6 @@ module Api
         if @user.updated_at < 1.day.ago || !@user.friends.exists?
             uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
             res = Net::HTTP.get_response(uri)
-            not_public = 'Not Public' unless res.is_a?(Net::HTTPSuccess)
             if res.is_a?(Net::HTTPSuccess)
                 friends = []
                 body = JSON.parse res.body
@@ -21,7 +20,7 @@ module Api
                 @user.friends = Friend.where(steam_id: friends)
             end
         end
-        return not_public || @user.friends
+        return @user.friends
     end
 
     def create_friend(id)
