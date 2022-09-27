@@ -81,7 +81,7 @@ module Api
     end
 
     def load_user_wishlist
-        if @user.updated_at < 2.hours.ago
+        if @user.updated_at < 2.hours.ago || @user.wishlist_games.exists?
             uri = URI("https://store.steampowered.com/wishlist/profiles/#{@user.steam_id}/wishlistdata")
             res = Net::HTTP.get_response(uri)
             if res.is_a?(Net::HTTPOK)
