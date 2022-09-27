@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_26_183711) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_27_161505) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_183711) do
     t.string "steam_name"
     t.datetime "updated_at"
     t.string "avatar"
+    t.boolean "privacy", default: true
   end
 
   create_table "friends_game_lists", force: :cascade do |t|

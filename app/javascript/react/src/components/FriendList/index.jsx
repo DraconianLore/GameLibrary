@@ -8,7 +8,7 @@ const FriendList = (props) => {
     const updateFriends = () => {
         setFriendList(props.friends.map((friend) => {
             return(
-                <Friend key={friend.steam_id} selected={selectedFriends[friend.id]} onClick={() => updateSelection(friend.id)}>
+                <Friend key={friend.steam_id} selected={selectedFriends[friend.id]} onClick={() => updateSelection(friend)} privacy={friend.privacy} title={friend.privacy ? 'Private Game List' : friend.steam_name} >
                 <img src={friend.avatar} />
                 <p>{friend.steam_name}</p>
             </Friend>
@@ -17,11 +17,13 @@ const FriendList = (props) => {
     }
 
     const updateSelection = (friend) => {
-        let changing = selectedFriends
-        changing[friend] = !changing[friend]
-        setSelectedFriends(changing)
-        updateFriends()
-        props.updateGameList(selectedFriends)
+        if(!friend.privacy) {
+            let changing = selectedFriends
+            changing[friend.id] = !changing[friend.id]
+            setSelectedFriends(changing)
+            updateFriends()
+            props.updateGameList(selectedFriends)
+        }
     }
 
     useEffect(() => {
@@ -63,4 +65,5 @@ const Friend = styled.div`
         margin:  0.5em 0;
     }
     ${props => props.selected && 'color: #ff0; img {  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.3);};'}
+    ${props => props.privacy && 'filter: grayscale(100%); cursor: not-allowed;'}
 `
