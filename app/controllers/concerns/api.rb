@@ -19,6 +19,9 @@ module Api
                 end
                 @user.friends = Friend.where(steam_id: friends)
             end
+            # set time user was updated as only associations are changed
+            @user.updated_at = Time.now
+            @user.save
         end
         return @user.friends
     end
@@ -84,18 +87,16 @@ module Api
         if @user.updated_at < 2.hours.ago || @user.wishlist_games.exists?
             uri = URI("https://store.steampowered.com/wishlist/profiles/#{@user.steam_id}/wishlistdata")
             res = Net::HTTP.get_response(uri)
-            if res.is_a?(Net::HTTPOK)
-                body = JSON.parse res.body
-                game_list = []
-                body.to_a.each do |g|
-                    game = Game.find_or_create_by(appid: g[0])
-                    game.name = g[1]['name']
-                    game.icon = g[1]['img_icon_url']
-                    game.wishlist_order = g[1]['priority']
-                    game.save
-                    get_game_details(game)
-                    game_list.push g[0]
-                end
+            body = JSON.parse res.body
+            game_list = []
+            body.to_a.each do |g|
+                game = Game.find_or_create_by(appid: g[0])
+                game.name = g[1]['name']
+                game.icon = g[1]['img_icon_url']
+                game.wishlist_order = g[1]['priority']
+                game.save
+                get_game_details(game)
+                game_list.push g[0]
                 @user.wishlist_games = Game.where(appid: game_list)
             end
         end
