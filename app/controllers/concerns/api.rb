@@ -39,7 +39,7 @@ module Api
                     f.privacy = true
                 else
                     f.privacy = false
-                    f.games << games
+                    f.games = games
                 end
             else
                 f.steam_name = 'Private Profile'

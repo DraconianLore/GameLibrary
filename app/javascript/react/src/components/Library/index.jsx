@@ -50,7 +50,7 @@ const Library = (props) => {
     <Layout user={props.user} section='friends'>
       <SelectFriends>Select friends to see which games you all have</SelectFriends>
       <FriendList friends={props.friends} updateGameList={updateGameList} />
-      {friendCount >0 &&<GameSection bg='113311'>
+      {friendCount > 0 &&<GameSection bg='113311'>
         {gameList.length >= 1 ? <><h2>{friendCount == 0 ? 'My Multiplayer Games' : 'Multiplayer games all selected friends have'}</h2>
         <GameList games={gameList} /></>
         : friendCount >= 1 && <h2>No shared multiplayer games :(</h2>}
