@@ -11,13 +11,10 @@
 #headerBar h1 {
     align-self: center;
 }
-#headerBar .homeButton {
-    font-size: 150%;
-    margin-left: 1em;
-    width: 3em;
-}
 #headerBar .homeButton img {
-    border-radius: 5px;
+    height: 65px;
+    border-radius: 0 20px 10px 20px;
+    margin-top: 5px
 }
 
 #headerBar .logoutButton {
@@ -86,8 +83,4 @@
     height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
-}
-
-#settings-page .username {
-    /* launcher usernames */
 }
