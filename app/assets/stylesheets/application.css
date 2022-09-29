@@ -17,6 +17,7 @@
  body, #library {
     margin: 0;
     font-family: Ubuntu, "times new roman", times, roman, serif;
+    background-color: #592a03;
 }
 .no-img {
    background-image: url('noimg.jpg');

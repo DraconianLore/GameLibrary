@@ -1,13 +1,31 @@
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
 
 <div class='login_screen'>
     <div class='sampleSection'>
         <h1>Game Match</h1>
-        <p>Find steam friends who share multiplayer games</p>
-    </div>
-    <div class='sampleSection'>
-        <h1>Not logged in </h1>
+        <p>Wanting to play a multiplayer game with some friends?</p>
+        <div class='sample-chat'>
+            <div class='left-side'>
+                <%= image_tag('anon', class: 'sample-profile')  %>
+                <p>Hey do you have this game?</p>
+            </div>
+            <div class='right-side'>
+                <%= image_tag('anon', class: 'sample-profile')  %>
+                <p>Yeah, but does Steve?</p>
+            </div>
+            <div class='left-side'>
+                <%= image_tag('anon', class: 'sample-profile')  %>
+                <p>He isn't responding, must be AFK</p>
+            </div>
+            <div class='right-side'>
+                <%= image_tag('anon', class: 'sample-profile')  %>
+                <p>Lets check on Game Match!</p>
+            </div>
+        </div>
+        <h3>With Game Match you can select any number of friends and see the games you all have.</h3>
+        <h2>Ready to start playing?</h2>
         <%= button_to image_tag("https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png"), '/auth/steam', method: :post, :data => {turbo: "false"}, class: 'loginButton' %>
-    </div
+    </div>
     <div class='sampleSection'>
         <h5><a class='copy' href='https://www.stevenwing.dev'>Steven Wing</a> ©2022</h5>        
     </di>
