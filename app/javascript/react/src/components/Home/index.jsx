@@ -54,9 +54,11 @@ const Home = (props) => {
             </HomeSection>
             }
             <HomeSection>
-                <h1>All My Games</h1>
-                <FilterList filters={filters} applyFilter={applyFilters} />
-                <GameList games={games} small={small} />
+                <h1>My Games</h1>
+                {games.length > 1 ? <><FilterList filters={filters} applyFilter={applyFilters} />
+                <GameList games={games} small={small} /></>
+                :<><h2>Your steam profile or games are set to private!</h2>
+                <p>In steam go to your profile -> edit profile -> Privacy settings, and set your game list to public to utilize this app.</p></>}
             </HomeSection>
             
         </Layout>
