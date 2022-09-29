@@ -44,6 +44,7 @@ module Api
             else
                 f.steam_name = 'Private Profile'
             end
+            f.updated_at = Time.now
             f.save
         end
         @user.friends << Friend.find_by(steam_id: id)
@@ -54,6 +55,9 @@ module Api
         res = Net::HTTP.get_response(uri)
         if res.is_a?(Net::HTTPSuccess)
             body = JSON.parse res.body
+            if body['response'] == {}
+                return 'Private'
+            end
             game_list = []
             body['response']['games'].to_a.each do |g|
                 game = Game.find_or_create_by(appid: g['appid'])

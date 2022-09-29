@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components'
+import { mdiAlert  } from '@mdi/js';
+import Icon from '@mdi/react'
 
 const FriendList = (props) => {
     const [selectedFriends, setSelectedFriends] = useState({})
     const [friendList, setFriendList] = useState(false)
+    const [privateFriend, setPrivateFriend] = useState(false)
 
     const updateFriends = () => {
         setFriendList(props.friends.map((friend) => {
+            if (friend.privacy) {
+                setPrivateFriend(true)
+            }
             return(
                 <Friend key={friend.steam_id} selected={selectedFriends[friend.id]} onClick={() => updateSelection(friend)} privacy={friend.privacy} title={friend.privacy ? 'Private Game List' : friend.steam_name} >
                 <img src={friend.avatar} />
@@ -31,9 +37,12 @@ const FriendList = (props) => {
     },[])
 
     return(
-        <FriendContainer>
-            {friendList ? friendList : 'Please set friends to public in your steam profile'}
-        </FriendContainer>
+        <>
+            <FriendContainer>
+                {friendList ? friendList : 'Please set friends to public in your steam profile'}
+            </FriendContainer>
+            {privateFriend && <small><Icon path={mdiAlert} size={'12px'} color={'#ff8300'} /> At least one of your friends has a private profile or game list <Icon path={mdiAlert} size={'12px'} color={'#ff8300'} /></small>}
+        </>
     )
 }
 
