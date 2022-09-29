@@ -17,11 +17,17 @@
  body, #library {
     margin: 0;
     font-family: Ubuntu, "times new roman", times, roman, serif;
+    background-color: #112;
 }
 .no-img {
    background-image: url('noimg.jpg');
    height: 215px;
    width: 460px
+}
+.no-img-sml {
+   background-image: url('noimg-s.jpg');
+   height: 69px;
+   width: 184px
 }
 
 /* MDI */

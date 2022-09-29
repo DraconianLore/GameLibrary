@@ -9,7 +9,6 @@ module Api
         if @user.updated_at < 1.day.ago || !@user.friends.exists?
             uri = URI("http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=#{@steam_key}&steamid=#{@user.steam_id}&relationship=friend")
             res = Net::HTTP.get_response(uri)
-            not_public = 'Not Public' unless res.is_a?(Net::HTTPSuccess)
             if res.is_a?(Net::HTTPSuccess)
                 friends = []
                 body = JSON.parse res.body
@@ -20,27 +19,32 @@ module Api
                 end
                 @user.friends = Friend.where(steam_id: friends)
             end
+            @user.updated_at = Time.now
+            @user.save
         end
-        return not_public || @user.friends
+        return @user.friends
     end
 
     def create_friend(id)
-        Friend.find_or_create_by(steam_id: id) do |f|
-            if f.steam_name == nil || f.steam_name = 'Private Profile' || f.updated_at < 1.day.ago
-                uri =  URI"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=#{@steam_key}&steamids=#{f.steam_id}"
-                res = Net::HTTP.get_response(uri)
-                if res.is_a?(Net::HTTPSuccess)
-                    body = JSON.parse res.body
-                    f.steam_name = body['response']['players'][0]['personaname']
-                    f.avatar = body['response']['players'][0]['avatarmedium']
-                    games = get_games(id) 
-                    if games != 'Private'
-                        f.games << games
-                    end
+        f = Friend.find_or_create_by(steam_id: id)
+        if f.steam_name == nil || f.steam_name = 'Private Profile' || f.updated_at < 1.day.ago || f.privacy == true
+            uri =  URI"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=#{@steam_key}&steamids=#{f.steam_id}"
+            res = Net::HTTP.get_response(uri)
+            if res.is_a?(Net::HTTPSuccess)
+                body = JSON.parse res.body
+                f.steam_name = body['response']['players'][0]['personaname']
+                f.avatar = body['response']['players'][0]['avatarmedium']
+                games = get_games(id) 
+                if games == 'Private'
+                    f.privacy = true
                 else
-                    f.steam_name = 'Private Profile'
+                    f.privacy = false
+                    f.games = games
                 end
-            end 
+            else
+                f.steam_name = 'Private Profile'
+            end
+            f.save
         end
         @user.friends << Friend.find_by(steam_id: id)
     end
@@ -82,13 +86,14 @@ module Api
     end
 
     def load_user_wishlist
-        if @user.updated_at < 2.hours.ago
+        if @user.updated_at < 2.hours.ago || @user.wishlist_games.exists?
             uri = URI("https://store.steampowered.com/wishlist/profiles/#{@user.steam_id}/wishlistdata")
             res = Net::HTTP.get_response(uri)
-            if res.is_a?(Net::HTTPOK)
-                body = JSON.parse res.body
-                game_list = []
-                body.to_a.each do |g|
+            body = JSON.parse res.body
+            game_list = []
+            wishlist = body.to_a
+            if wishlist.length > 0
+                wishlist.each do |g|
                     game = Game.find_or_create_by(appid: g[0])
                     game.name = g[1]['name']
                     game.icon = g[1]['img_icon_url']
@@ -96,12 +101,11 @@ module Api
                     game.save
                     get_game_details(game)
                     game_list.push g[0]
+                    @user.wishlist_games = Game.where(appid: game_list)
                 end
-                @user.wishlist_games = Game.where(appid: game_list)
             end
         end
         return @user.wishlist_games.order('current_discount DESC, wishlist_order ASC')
-
     end
     
     def get_game_details(game)

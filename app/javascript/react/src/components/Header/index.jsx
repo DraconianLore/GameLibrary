@@ -31,8 +31,8 @@ const HeaderBar = styled.div`
     justify-content: space-between;
     width: 100%;
     height: 75px;
-    background-color: #824a13;
-    color: #ff9b5f;
+    background-color: #334;
+    color: #acf;
     h1 {
         align-self: center;
     }
@@ -47,12 +47,12 @@ const Menu = styled.p`
 const LogoutButton = styled.p`
     font-size: 150%;
     margin-right: 1em;
-    background-color: #64412b;
+    background-color: #223;
     border: 1px solid #333;
-    padding: 0.1em 0.3em;
+    padding: 0.1em 0.5em;
     border-radius: 10px;
     &:hover {
-        background-color: #74513b;
+        background-color: #446;
     }
     cursor: pointer;
     width: 3em;

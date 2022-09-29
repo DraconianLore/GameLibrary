@@ -31,9 +31,37 @@ const GameList = (props) => {
         )
     })
 
+    const gamesSmall = props.games.map((game) => {
+        return(
+            <GameItemSmall key={game.appid} className={props.dontHave ? 'dontHave' : ''}>
+                <img src={`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/capsule_184x69.jpg`} 
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src='';
+                        currentTarget.classList.add('no-img-sml')  
+                    }} onClick={() => openInSteam(game.appid)} />
+                <GameDetailsSml>
+                    <p>{game.name}</p> 
+                    <GameInfo>
+                        {game.runs_on_windows && <Icon path={mdiMicrosoftWindows} size={1} />}
+                        {game.runs_on_mac && <Icon path={mdiApple} size={1} />}
+                        {game.runs_on_linux && <Icon path={mdiLinux} size={1} />}
+                        {game.is_pvp && <PvPIcon>PvP</PvPIcon>}
+                        {game.is_coop && <CoopIcon>Co-op</CoopIcon>}
+                    </GameInfo>
+                    <div id={'g' + game.appid} className='gameInfos'>
+                        {game.description}
+                    </div>
+                    {game.current_discount > 0 && <OnSale><p>On Sale</p>{game.current_discount}% Off</OnSale>}
+                </GameDetailsSml>
+                
+            </GameItemSmall>
+        )
+    })
+
     return(
         <GameContainer>
-            {games}
+            {props.small ? gamesSmall : games}
         </GameContainer>
     )
 }
@@ -59,6 +87,7 @@ const GameName = styled.div`
     p {
         max-width: 360px;
         margin: 0 1em;
+        text-align: center;
     }
 `
 const GameItem = styled.div`
@@ -90,7 +119,7 @@ const ImageContainer = styled.div`
         background-color: rgba(0,0,0,0.5);
         cursor: pointer;
         p {
-            color: #ff0;
+            color: #eee;
             margin: 1em;
         }
     }
@@ -162,4 +191,85 @@ const CoopBanner = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`
+// Smaller version
+const GameItemSmall = styled.div`
+    width: 90vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(100,170,255,0.3);
+    height: 89px;
+    padding: 0 1em;
+    p {
+        margin: 0;
+    }
+    img {
+        cursor: pointer;
+    }
+    :nth-child(odd) {
+        background-color: rgba(50,150,255,0.2);
+    }
+    :hover .gameInfos {
+        display: flex;
+    }
+`
+const GameDetailsSml = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: 2em;
+    height: 69px;
+    justify-content: space-around;
+    position: relative;
+    .gameInfos {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5em;
+        position: absolute;
+        top: -10px;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 4;
+        cursor: pointer;
+    }
+    
+`
+
+const GameInfo = styled.div`
+    display: flex;
+    
+`
+
+const OnSale = styled.div`
+    background-color: #0D3910;
+    padding: 0 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50% 0 50% 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 69px;
+    z-index: 3;
+`
+
+const CoopIcon = styled.div`
+    background-color: #1B219C;
+    padding: 0.2em 0.5em;
+    border-radius: 0 10px 0 10px;
+    margin-left: 0.5em;
+`
+
+const PvPIcon = styled.div`
+    background-color: #9C1B21;
+    padding: 0.2em 0.5em;
+    border-radius: 0 10px 0 10px;
+    margin-left: 0.5em;
 `
