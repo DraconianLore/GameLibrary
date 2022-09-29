@@ -51,6 +51,9 @@
     align-items: flex-end;
     margin-top: -30px;;
 }
+.right-side img {
+    filter: contrast(5);
+}
 .sample-profile {
     width: 100px;
 }
