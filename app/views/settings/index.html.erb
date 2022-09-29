@@ -1,9 +1,13 @@
 
 <div id='headerBar'>
     <%# logo to go here %>
-    <%= link_to image_tag('small-logo.png'), root_path, class: 'homeButton', :data => {turbo: false} %> 
-    <h1><%= @user.name %>'s Settings</h1>
-    <%= link_to 'Log Out', auth_logout_path, class: 'logoutButton' %>
+    <div class='side-section'>
+        <%= link_to image_tag('small-logo.png'), root_path, class: 'homeButton', :data => {turbo: false} %> 
+    </div>
+    <%= image_tag('logo-no-icon.png', class: 'header-logo') %>
+    <div class='side-section'>
+        <%= link_to 'Log Out', auth_logout_path, class: 'logoutButton' %>
+    </div>
 </div>
 <div id='settings-page'>
     <h1>Steam Account</h1>

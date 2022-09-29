@@ -8,15 +8,17 @@
     color: #9be;
 }
 
-#headerBar h1 {
-    align-self: center;
+#headerBar .header-logo {
+    height: 75px;
 }
 #headerBar .homeButton img {
     height: 65px;
     border-radius: 0 20px 10px 20px;
     margin-top: 5px
 }
-
+#headerBar .side-section {
+    width: 100px;
+}
 #headerBar .logoutButton {
     font-size: 150%;
     margin-right: 1em;

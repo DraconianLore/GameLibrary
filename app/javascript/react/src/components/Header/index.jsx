@@ -13,8 +13,7 @@ const Header = (props) => {
     return(
         <HeaderBar>
             <Menu />
-            <h1>{props.user.steam_name || props.user.name}'s {props.section || 'Game Matcher'}</h1>
-
+            <HeaderLogo src='logo-no-icon.png' />
             <LogoutButton onClick={logOut}>Logout</LogoutButton>
         </HeaderBar>
 
@@ -42,6 +41,9 @@ const Menu = styled.p`
     font-size: 150%;
     margin-left: 1em;
     width: 3em;
+`
+const HeaderLogo = styled.img`
+    height: 75px;
 `
 
 const LogoutButton = styled.p`
