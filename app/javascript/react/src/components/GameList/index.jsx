@@ -119,7 +119,7 @@ const ImageContainer = styled.div`
         background-color: rgba(0,0,0,0.5);
         cursor: pointer;
         p {
-            color: #fed;
+            color: #eee;
             margin: 1em;
         }
     }
@@ -198,7 +198,7 @@ const GameItemSmall = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(100,170,255,0.3);
     height: 89px;
     padding: 0 1em;
     p {
@@ -208,7 +208,7 @@ const GameItemSmall = styled.div`
         cursor: pointer;
     }
     :nth-child(odd) {
-        background-color: rgba(0,0,0,0.6);
+        background-color: rgba(50,150,255,0.2);
     }
     :hover .gameInfos {
         display: flex;

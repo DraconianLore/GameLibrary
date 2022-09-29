@@ -29,15 +29,18 @@ const Filters = styled.div`
     max-width: 90%;
     align:items: center;
     justify-content: center;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(50,150,255,0.2);
     margin-bottom 1em;
 `
 const Filter = styled.p`
     font-size: 120%;
-    background-color: ${props => props.active ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.4)'};
+    background-color: ${props => props.active ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.6)'};
     border-radius: 10px;
     margin: 0.5em;
     padding: 0.2em 0.4em;
     cursor: pointer;
-    color: #ff9b5f;
+    color: ${props => props.active ? '#bdf' : '#9be'};
+    &:hover {
+        color: #bdf;
+    }
 `

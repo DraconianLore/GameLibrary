@@ -2,7 +2,7 @@
 <div class='img-holder'>
     <%= image_tag "#{client}.png", class: 'logo-img' %>
     <div class='img-center'>
-        <div class='unlink'><%= button_to 'Delete Account', unlink_path, params: {client: client}, class: 'btn-unlink' %></div>
+        <div class='unlink'><%= button_to 'Unlink Account', unlink_path, params: {client: client}, class: 'btn-unlink' %></div>
     </div>
 </div>
-<p class='username'><%= @user["#{client}_name"] %></p>
+<p class='username'><%= @user.name %></p>

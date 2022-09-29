@@ -59,9 +59,9 @@ const Library = (props) => {
          <GameList games={onWishlist} dontHave={true} />
         </>}
       </GameSection>}
-      {soClose.length >= 1 && <GameSection bg='5e3f1e'><h2>Multiplayer games most of you have</h2>
+      {soClose.length >= 1 && <GameSection bg='4f1c02'><h2>Multiplayer games most of you have</h2>
       <GameList games={soClose} /></GameSection>}
-      {(notShared.length >= 1 || friendCount === 0) && <GameSection bg='400505'><h2>Your Multiplayer Games</h2>
+      {(notShared.length >= 1 || friendCount === 0) && <GameSection bg='303B47'><h2>Your Multiplayer Games</h2>
       <GameList games={notShared.length > 0  ? notShared : gameList} /></GameSection>}
     </Layout>
   )
@@ -75,14 +75,14 @@ const HeadingH1 = styled.h1`
 `
 const GameSection = styled.div`
   background-color: #${props => props.bg};
-  color: #ccc;
+  color: rgba(255,255,255,0.6);
   border-radius: 0 50px 0 50px;
   width: 100%;
   margin: 0 0 2em;
   text-align: center;
 `
 const SelectFriends = styled.h3`
-  background-color: #693a13;
+  background-color: #223;
   margin-bottom: 0;
   border-radius: 50px 50px 0 0;
   padding 0.5em 1em 0;

@@ -28,7 +28,7 @@ const MainContent = styled.div`
     align-items: center;
     height: 95%;
     overflow-y: scroll;
-    background-color: #592a03;
-    color: #ff9b5f;
+    background-color: #112;
+    color: #9be;
 `
 
