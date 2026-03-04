@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_27_161505) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_04_175000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_27_161505) do
     t.string "steam_id"
     t.datetime "updated_at", default: "2022-09-15 00:50:13", null: false
     t.datetime "created_at"
+    t.datetime "games_updated_at", default: "2025-03-04 17:56:45"
+    t.datetime "wishlist_updated_at", default: "2025-03-04 17:56:45"
   end
 
   create_table "wishlists", force: :cascade do |t|
