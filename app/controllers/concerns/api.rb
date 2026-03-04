@@ -81,13 +81,11 @@ module Api
     end
 
     def load_user_games
-        # Always refresh if user data is older than 1 day
-        if @user.updated_at < 1.day.ago
-            Rails.logger.info "Refreshing user games - last updated: #{@user.updated_at}"
+        # Always refresh if games data is older than 1 day
+        if @user.games_updated_at < 1.day.ago
+            Rails.logger.info "Refreshing user games - last updated: #{@user.games_updated_at}"
             
             @user.games = get_games(@user.steam_id)
-            @user.updated_at = Time.now
-            @user.save
             
             # Update game details for any games that haven't been updated recently
             @user.games.each do |game|
@@ -95,17 +93,21 @@ module Api
                     get_game_details(game)
                 end
             end
+            
+            # Update games timestamp after successful refresh
+            @user.games_updated_at = Time.now
+            @user.save
         else
-            Rails.logger.info "Using cached user games - last updated: #{@user.updated_at}"
+            Rails.logger.info "Using cached user games - last updated: #{@user.games_updated_at}"
         end
         
         return @user.games.order('last_played DESC NULLS last')
     end
 
     def load_user_wishlist
-        # Always refresh if user data is older than 1 day (consistent with games)
-        if @user.updated_at < 1.day.ago || !@user.wishlist_games.exists?
-            Rails.logger.info "Refreshing user wishlist - last updated: #{@user.updated_at}"
+        # Always refresh if wishlist data is older than 1 day OR if we have no wishlist games
+        if @user.wishlist_updated_at < 1.day.ago || !@user.wishlist_games.exists?
+            Rails.logger.info "Refreshing user wishlist - last updated: #{@user.wishlist_updated_at}, exists: #{@user.wishlist_games.exists?}"
             
             game_list = []
             
@@ -131,6 +133,12 @@ module Api
                             get_game_details(game)
                             game_list.push appid
                         end
+                        
+                        # Only update timestamp if we successfully loaded new data
+                        if game_list.any?
+                            @user.wishlist_games = Game.where(appid: game_list)
+                            Rails.logger.info "Successfully loaded #{game_list.length} wishlist games"
+                        end
                     else
                         Rails.logger.warn "Wishlist API response missing items data"
                     end
@@ -143,18 +151,15 @@ module Api
                 Rails.logger.error e.backtrace.first(5).join("\n")
             end
             
-            if game_list.any?
-                @user.wishlist_games = Game.where(appid: game_list)
-                Rails.logger.info "Successfully loaded #{game_list.length} wishlist games"
-            else
+            if game_list.empty?
                 Rails.logger.info "No wishlist games found - wishlist might be empty or API failed"
             end
             
-            # Update user timestamp after wishlist refresh attempt
-            @user.updated_at = Time.now
+            # Update wishlist timestamp after refresh attempt
+            @user.wishlist_updated_at = Time.now
             @user.save
         else
-            Rails.logger.info "Using cached user wishlist - last updated: #{@user.updated_at}"
+            Rails.logger.info "Using cached user wishlist - last updated: #{@user.wishlist_updated_at}"
         end
         
         return @user.wishlist_games.order('current_discount DESC, wishlist_order ASC')
