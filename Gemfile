@@ -43,6 +43,8 @@ gem 'rack-cors'
 gem 'omniauth-auth0', '~> 3.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0' # prevents forged authentication requests
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 gem 'omniauth-steam'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

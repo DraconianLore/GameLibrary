@@ -53,8 +53,12 @@ module Api
     def get_games(id)
         uri = URI("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=#{@steam_key}&steamid=#{id}&format=json&include_appinfo=true")
         res = Net::HTTP.get_response(uri)
+        Rails.logger.info "Steam API response for games: #{res.code} - Body length: #{res.body.length}"
+        
         if res.is_a?(Net::HTTPSuccess)
             body = JSON.parse res.body
+            Rails.logger.info "Steam API response body: #{body.inspect}"
+            
             if body['response'] == {}
                 return 'Private'
             end
@@ -71,44 +75,88 @@ module Api
             end
             return Game.where(appid: game_list)
         else
+            Rails.logger.warn "Steam API failed for games: #{res.code} - #{res.body}"
             return 'Private'
         end
     end
 
     def load_user_games
-        if @user.updated_at < 1.day.ago || !@user.games.exists?
+        # Always refresh if user data is older than 1 day
+        if @user.updated_at < 1.day.ago
+            Rails.logger.info "Refreshing user games - last updated: #{@user.updated_at}"
+            
             @user.games = get_games(@user.steam_id)
             @user.updated_at = Time.now
             @user.save
+            
+            # Update game details for any games that haven't been updated recently
             @user.games.each do |game|
                 if game.updated_at < 1.day.ago || game.created_at > 2.minutes.ago
                     get_game_details(game)
                 end
             end
+        else
+            Rails.logger.info "Using cached user games - last updated: #{@user.updated_at}"
         end
+        
         return @user.games.order('last_played DESC NULLS last')
     end
 
     def load_user_wishlist
-        if @user.updated_at < 2.hours.ago || @user.wishlist_games.exists?
-            uri = URI("https://store.steampowered.com/wishlist/profiles/#{@user.steam_id}/wishlistdata")
-            res = Net::HTTP.get_response(uri)
-            body = JSON.parse res.body
+        # Always refresh if user data is older than 1 day (consistent with games)
+        if @user.updated_at < 1.day.ago || !@user.wishlist_games.exists?
+            Rails.logger.info "Refreshing user wishlist - last updated: #{@user.updated_at}"
+            
             game_list = []
-            wishlist = body.to_a
-            if wishlist.length > 0
-                wishlist.each do |g|
-                    game = Game.find_or_create_by(appid: g[0])
-                    game.name = g[1]['name']
-                    game.icon = g[1]['img_icon_url']
-                    game.wishlist_order = g[1]['priority']
-                    game.save
-                    get_game_details(game)
-                    game_list.push g[0]
-                    @user.wishlist_games = Game.where(appid: game_list)
+            
+            # Use Steam Web API for wishlist data
+            begin
+                uri = URI("https://api.steampowered.com/IWishlistService/GetWishlist/v1/?key=#{@steam_key}&steamid=#{@user.steam_id}")
+                res = Net::HTTP.get_response(uri)
+                
+                Rails.logger.info "Steam Wishlist API response: #{res.code} - Body length: #{res.body.length}"
+                
+                if res.is_a?(Net::HTTPSuccess) && !res.body.empty?
+                    body = JSON.parse res.body
+                    
+                    if body['response'] && body['response']['items']
+                        wishlist_items = body['response']['items']
+                        Rails.logger.info "Successfully loaded #{wishlist_items.length} wishlist items from Steam API"
+                        
+                        wishlist_items.each do |item|
+                            appid = item['appid'].to_s
+                            game = Game.find_or_create_by(appid: appid)
+                            game.wishlist_order = item['priority'] || 0
+                            game.save
+                            get_game_details(game)
+                            game_list.push appid
+                        end
+                    else
+                        Rails.logger.warn "Wishlist API response missing items data"
+                    end
+                else
+                    Rails.logger.warn "Steam Wishlist API failed: #{res.code} - #{res.body}"
                 end
+                
+            rescue => e
+                Rails.logger.error "Error fetching wishlist from Steam API: #{e.message}"
+                Rails.logger.error e.backtrace.first(5).join("\n")
             end
+            
+            if game_list.any?
+                @user.wishlist_games = Game.where(appid: game_list)
+                Rails.logger.info "Successfully loaded #{game_list.length} wishlist games"
+            else
+                Rails.logger.info "No wishlist games found - wishlist might be empty or API failed"
+            end
+            
+            # Update user timestamp after wishlist refresh attempt
+            @user.updated_at = Time.now
+            @user.save
+        else
+            Rails.logger.info "Using cached user wishlist - last updated: #{@user.updated_at}"
         end
+        
         return @user.wishlist_games.order('current_discount DESC, wishlist_order ASC')
     end
     
@@ -120,15 +168,41 @@ module Api
             if body[game.appid]['success'] == false
                 game.destroy!
             else
-                tag_array = body[game.appid]['data']['categories'].map { |tag| tag['description']}
+                # Add nil checks for all optional fields
+                game_data = body[game.appid]['data']
+                
+                # Handle categories safely
+                if game_data['categories']
+                    tag_array = game_data['categories'].map { |tag| tag['description']}
                 game.is_multiplayer = tag_array.include?('Multi-player') ? true : false
                 game.is_coop = tag_array.include?('Co-op') ? true : false
                 game.is_pvp = tag_array.include?('PvP') ? true : false
-                game.description = body[game.appid]['data']['short_description']
-                game.current_discount = body[game.appid]['data'].key?('price_overview') ? body[game.appid]['data']['price_overview']['discount_percent'] : 0
-                game.runs_on_windows = body[game.appid]['data']['platforms']['windows']
-                game.runs_on_mac = body[game.appid]['data']['platforms']['mac']
-                game.runs_on_linux = body[game.appid]['data']['platforms']['linux']
+                else
+                    game.is_multiplayer = false
+                    game.is_coop = false
+                    game.is_pvp = false
+                end
+                
+                game.description = game_data['short_description'] || ''
+                
+                # Handle price overview safely
+                if game_data['price_overview']
+                    game.current_discount = game_data['price_overview']['discount_percent'] || 0
+                else
+                    game.current_discount = 0
+                end
+                
+                # Handle platforms safely
+                if game_data['platforms']
+                    game.runs_on_windows = game_data['platforms']['windows'] || false
+                    game.runs_on_mac = game_data['platforms']['mac'] || false
+                    game.runs_on_linux = game_data['platforms']['linux'] || false
+                else
+                    game.runs_on_windows = false
+                    game.runs_on_mac = false
+                    game.runs_on_linux = false
+                end
+                
                 game.save
             end
         end
